@@ -61,9 +61,14 @@ auto slow_func(size_t seconds) -> size_t
     return seconds;
 }
 
+
+
 template <typename... Ts>
 struct tuple_hash;
 
+/// @brief std::tuple does not provide an implementation for hashing by default. Required for hashing memoizing function arguments cache.
+/// @tparam T
+/// @tparam ...Ts 
 template <typename T, typename... Ts>
 struct tuple_hash<T, Ts...> {
     auto operator()(const std::tuple<T, Ts...>& t) const -> size_t {
@@ -74,8 +79,6 @@ struct tuple_hash<T, Ts...> {
         return hash_value;
     }
 };
-
-// 
 
 /// @brief Creates a function that memoizes the return values of a function using a cache for an arbitrary number of arguments.
 /// @tparam return_t The return type.
